@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "techstock/gestion-parc-informatique",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "TechStock - Application de gestion de parc informatique (equipements, salles, categories, interventions).",
+    "keywords": ["laravel", "parc-informatique", "inventaire", "gestion", "bootstrap"],
     "license": "MIT",
     "require": {
         "php": "^8.3",

@@ -5,6 +5,34 @@
 // ajoute quelques petits styles pour l'application.
 // ============================================================================
 
+// --- Polices ----------------------------------------------------------------
+// La police est stockée dans public/fonts : le build ne dépend d'aucun
+// téléchargement réseau.
+
+@font-face {
+    font-family: "Instrument Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/instrument-sans-400.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Instrument Sans";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("/fonts/instrument-sans-500.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Instrument Sans";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("/fonts/instrument-sans-600.woff2") format("woff2");
+}
+
 // --- Couleurs et formes de Bootstrap ---------------------------------------
 $primary:   #4f46e5;
 $teal:      #0d9488;
