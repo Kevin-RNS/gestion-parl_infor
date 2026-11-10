@@ -1,30 +1,45 @@
 <x-layout title="Salles">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h3 mb-0">Salles</h1>
-        <a href="{{ route('rooms.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i> Nouvelle salle
-        </a>
-    </div>
+    <x-page-header title="Salles" subtitle="Les espaces du parc et le matériel qu'ils abritent.">
+        <x-slot:actions>
+            <a href="{{ route('rooms.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Nouvelle salle
+            </a>
+        </x-slot:actions>
+    </x-page-header>
 
-    <div class="row g-3">
-        @forelse ($rooms as $room)
-            <div class="col-md-4">
-                <a href="{{ route('rooms.show', $room) }}" class="text-decoration-none text-dark">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h2 class="h5">{{ $room->nom }}</h2>
-                            <p class="text-muted mb-1"><i class="bi bi-building"></i> {{ $room->batiment }}</p>
-                            <p class="text-muted mb-1"><i class="bi bi-people"></i> Capacité : {{ $room->capacite }}</p>
-                            {{-- Bonus : nombre d'équipements par salle --}}
-                            <span class="badge bg-primary">{{ $room->devices_count }} équipement(s)</span>
-                        </div>
-                    </div>
+    @if ($rooms->isEmpty())
+        <div class="surface-card">
+            <div class="empty-state">
+                <span class="empty-icon" aria-hidden="true"><i class="bi bi-door-open"></i></span>
+                <p class="fw-bold">Aucune salle enregistrée</p>
+                <p>Les salles permettent de regrouper les équipements.</p>
+                <a href="{{ route('rooms.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Nouvelle salle
                 </a>
             </div>
-        @empty
-            <p class="text-muted">Aucune salle enregistrée pour le moment.</p>
-        @endforelse
-    </div>
+        </div>
+    @else
+        <div class="row g-3">
+            @foreach ($rooms as $room)
+                <div class="col-md-6 col-xl-4">
+                    <a href="{{ route('rooms.show', $room) }}" class="text-decoration-none text-body">
+                        <div class="surface-card h-100 p-3">
+                            <h2 class="h6 fw-bold mb-1">{{ $room->nom }}</h2>
+                            <p class="text-muted small mb-2">
+                                <i class="bi bi-building me-1" aria-hidden="true"></i>{{ $room->batiment }}
+                            </p>
+                            <span class="badge-soft badge-soft-primary">
+                                {{ $room->devices_count }} équipement(s)
+                            </span>
+                            <span class="text-muted small ms-2">
+                                {{ $room->capacite }} places
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
 </x-layout>

@@ -1,0 +1,328 @@
+// ============================================================================
+// TechStock — feuille de style
+// ----------------------------------------------------------------------------
+// Bootstrap est compilé avec quelques couleurs personnalisées, puis on
+// ajoute quelques petits styles pour l'application.
+// ============================================================================
+
+// --- Couleurs et formes de Bootstrap ---------------------------------------
+$primary:   #4f46e5;
+$teal:      #0d9488;
+$success:   #059669;
+$danger:    #e11d48;
+$warning:   #d97706;
+$info:      #0284c7;
+$secondary: #64748b;
+
+$theme-colors: (
+    "primary":   $primary,
+    "secondary": $secondary,
+    "success":   $success,
+    "info":      $info,
+    "warning":   $warning,
+    "danger":    $danger,
+    "light":     #f8fafc,
+    "dark":      #1e293b,
+);
+
+$body-bg: #f4f6fb;
+$body-color: #475569;
+
+$font-family-sans-serif: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-size-base: .9375rem;
+
+$border-radius: .6rem;
+$border-color: #e2e8f0;
+
+$card-border-color: #e2e8f0;
+$card-cap-bg: transparent;
+
+$table-border-color: #eef1f6;
+$table-cell-padding-y: .75rem;
+
+$input-btn-padding-y: .45rem;
+$input-btn-padding-x: .8rem;
+
+$link-decoration: none;
+
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+// --- Styles de l'application ------------------------------------------------
+
+body {
+    background-color: $body-bg;
+}
+
+// Barre du haut
+.app-header {
+    background: #fff;
+    border-bottom: 1px solid $border-color;
+}
+
+.app-brand {
+    font-weight: 700;
+    letter-spacing: -.02em;
+
+    .brand-mark {
+        display: inline-grid;
+        place-items: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: .5rem;
+        background: linear-gradient(135deg, lighten($primary, 8%), $teal);
+        color: #fff;
+    }
+}
+
+.app-nav .nav-link {
+    color: $secondary;
+
+    &.active {
+        color: $primary;
+        font-weight: 600;
+    }
+}
+
+// Cartes
+.surface-card {
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: .85rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .04);
+}
+
+// Petites cartes d'indicateurs
+.stat-card {
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: .85rem;
+    padding: 1rem 1.15rem;
+    height: 100%;
+
+    .stat-value {
+        font-size: 1.7rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .stat-label {
+        font-size: .8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: $secondary;
+    }
+
+    .stat-icon {
+        display: grid;
+        place-items: center;
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: .6rem;
+        background: rgba($primary, .1);
+        color: $primary;
+    }
+}
+
+// Pastilles d'état (toujours accompagnées d'un texte)
+.badge-soft {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .2rem .55rem;
+    border-radius: 2rem;
+    font-size: .78rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: $secondary;
+
+    &::before {
+        content: "";
+        width: .4rem;
+        height: .4rem;
+        border-radius: 50%;
+        background: currentColor;
+    }
+}
+
+.badge-soft-primary   { background: rgba($primary, .1);  color: darken($primary, 8%); }
+.badge-soft-success   { background: rgba($success, .1);  color: darken($success, 6%); }
+.badge-soft-danger    { background: rgba($danger, .1);   color: darken($danger, 4%); }
+.badge-soft-warning   { background: rgba($warning, .12); color: darken($warning, 8%); }
+.badge-soft-info      { background: rgba($info, .1);     color: darken($info, 6%); }
+.badge-soft-secondary { background: #f1f5f9; color: $secondary; }
+
+// Petits boutons icônes
+.icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid $border-color;
+    border-radius: .45rem;
+    background: #fff;
+    color: $secondary;
+    line-height: 1;
+
+    &:hover {
+        color: $primary;
+        border-color: $primary;
+    }
+
+    &.icon-btn-danger:hover {
+        color: $danger;
+        border-color: $danger;
+    }
+}
+
+// Titre de page
+.page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.35rem;
+}
+
+.page-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: $secondary;
+    margin: .25rem 0 0;
+}
+
+// Titre de section dans une carte
+.section-title {
+    font-size: .95rem;
+    font-weight: 700;
+    margin-bottom: .8rem;
+}
+
+// Tableau
+.app-table {
+    margin-bottom: 0;
+
+    thead th {
+        font-size: .75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: $secondary;
+        background: #f8fafc;
+        white-space: nowrap;
+    }
+
+    td a {
+        font-weight: 600;
+    }
+}
+
+// Tableau défilable sur mobile
+.table-wrap {
+    overflow-x: auto;
+}
+
+// État vide
+.empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: $secondary;
+
+    .empty-icon {
+        display: grid;
+        place-items: center;
+        width: 3rem;
+        height: 3rem;
+        margin: 0 auto .75rem;
+        border-radius: .75rem;
+        background: #f1f5f9;
+        font-size: 1.35rem;
+    }
+}
+
+// Formulaires
+.form-label {
+    font-weight: 600;
+    font-size: .88rem;
+}
+
+.form-text {
+    font-size: .8rem;
+}
+
+// Pied de page
+.app-footer {
+    border-top: 1px solid $border-color;
+    color: $secondary;
+    font-size: .85rem;
+}
+
+// Focus clavier bien visible
+:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+}
+
+// Deux petits utilitaires absents de Bootstrap
+.min-w-0 {
+    min-width: 0;
+}
+
+.flex-none {
+    flex: none;
+}
+
+// Theme sombre : activé automatiquement par le système (aucun JavaScript).
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bs-body-bg: #0f172a;
+        --bs-body-color: #e2e8f0;
+        --bs-emphasis-color: #f1f5f9;
+        --bs-secondary-color: #94a3b8;
+        --bs-border-color: #334155;
+        --bs-tertiary-bg: #1e293b;
+    }
+
+    .app-header,
+    .surface-card,
+    .stat-card,
+    .icon-btn {
+        background-color: #1e293b;
+        border-color: #334155;
+    }
+
+    .app-nav .nav-link {
+        color: #94a3b8;
+
+        &.active {
+            color: lighten($primary, 15%);
+        }
+    }
+
+    .app-table thead th {
+        background: #172033;
+        color: #94a3b8;
+    }
+
+    .badge-soft {
+        background: #334155;
+        color: #cbd5e1;
+    }
+
+    .empty-state .empty-icon {
+        background: #334155;
+    }
+
+    .form-control,
+    .form-select {
+        background-color: #172033;
+        border-color: #334155;
+        color: #e2e8f0;
+    }
+}

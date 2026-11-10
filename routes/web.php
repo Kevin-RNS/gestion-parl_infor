@@ -1,21 +1,30 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\InterventionController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/devices');
+// Tableau de bord
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-// CRUD complet des équipements 
+// CRUD des équipements
 Route::resource('devices', DeviceController::class);
+Route::get('devices/{device}/delete', [DeviceController::class, 'confirmDestroy'])
+    ->name('devices.confirm-destroy');
 
-// Salles 
-Route::resource('rooms', RoomController::class)->only(['index', 'create', 'store', 'show']);
+// CRUD des salles
+Route::resource('rooms', RoomController::class)->parameters(['rooms' => 'room']);
+Route::get('rooms/{room}/delete', [RoomController::class, 'confirmDestroy'])
+    ->name('rooms.confirm-destroy');
 
-// Catégories 
-Route::resource('categories', CategoryController::class)->only(['index', 'create', 'store', 'show']);
+// CRUD des catégories
+Route::resource('categories', CategoryController::class)->parameters(['categories' => 'category']);
+Route::get('categories/{category}/delete', [CategoryController::class, 'confirmDestroy'])
+    ->name('categories.confirm-destroy');
 
-// Ajout d'une intervention 
-Route::post('devices/{device}/interventions', [InterventionController::class, 'store'])->name('interventions.store');
+// Ajout d'une intervention
+Route::post('devices/{device}/interventions', [InterventionController::class, 'store'])
+    ->name('interventions.store');

@@ -1,16 +1,21 @@
 <x-layout title="Nouvel équipement">
 
-    <h1 class="h3 mb-4">Nouvel équipement</h1>
+    <x-page-header title="Nouvel équipement" subtitle="Enregistrer un matériel dans le parc.">
+        <x-slot:actions>
+            <a href="{{ route('devices.index') }}" class="btn btn-light">Annuler</a>
+        </x-slot:actions>
+    </x-page-header>
 
-    <div class="card">
+    <div class="surface-card">
         <div class="card-body">
             <form action="{{ route('devices.store') }}" method="POST">
                 @include('devices._form')
 
+                <hr class="my-4">
+
                 <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-check-lg"></i> Créer l'équipement
+                    <i class="bi bi-check-lg me-1" aria-hidden="true"></i> Créer l'équipement
                 </button>
-                <a href="{{ route('devices.index') }}" class="btn btn-outline-secondary">Annuler</a>
             </form>
         </div>
     </div>

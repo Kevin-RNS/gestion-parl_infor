@@ -2,48 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\DeviceRequest;
 use App\Models\Category;
 use App\Models\Device;
 use App\Models\Room;
+use Illuminate\Http\Request;
+
 class DeviceController extends Controller
 {
-    // Liste des équipements + recherche  + pagination 
+    /**
+     * Liste des équipements : recherche, filtres et pagination.
+     */
     public function index(Request $request)
     {
+        $search = trim((string) $request->input('search', ''));
+        $etat = $request->input('etat');
+        $roomId = $request->input('room_id');
+
         $query = Device::with('room', 'categories');
 
-        if ($search = $request->input('search')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('nom', 'like', "%{$search}%")
-                  ->orWhere('marque', 'like', "%{$search}%");
+        if ($search !== '') {
+            $like = '%'.str_replace(['%', '_'], ['\%', '\_'], $search).'%';
+
+            $query->where(function ($q) use ($like) {
+                $q->where('nom', 'like', $like)
+                    ->orWhere('marque', 'like', $like)
+                    ->orWhere('numero_serie', 'like', $like);
             });
         }
 
-        $devices = $query->orderBy('nom')->paginate(8)->withQueryString();
+        if ($etat) {
+            $query->where('etat', $etat);
+        }
 
-        return view('devices.index', compact('devices', 'search'));
+        if ($roomId) {
+            $query->where('room_id', $roomId);
+        }
+
+        $devices = $query->orderBy('nom')->paginate(10)->withQueryString();
+
+        return view('devices.index', [
+            'devices' => $devices,
+            'search' => $search,
+            'etat' => $etat,
+            'roomId' => $roomId,
+            'rooms' => Room::orderBy('nom')->get(['id', 'nom']),
+        ]);
     }
 
     public function create()
     {
-        $rooms = Room::orderBy('nom')->get();
-        $categories = Category::orderBy('nom')->get();
-
-        return view('devices.create', compact('rooms', 'categories'));
+        return view('devices.create', [
+            'rooms' => Room::orderBy('nom')->get(),
+            'categories' => Category::orderBy('nom')->get(),
+        ]);
     }
 
     public function store(DeviceRequest $request)
     {
         $device = Device::create($request->validated());
 
-        // Association des catégories cochées 
+        // On enregistre les catégories cochées.
         $device->categories()->sync($request->input('categories', []));
 
         return redirect()
             ->route('devices.show', $device)
-            ->with('success', 'Équipement créé avec succès.');
+            ->with('success', 'Équipement « '.$device->nom.' » créé avec succès.');
     }
 
     public function show(Device $device)
@@ -55,11 +79,11 @@ class DeviceController extends Controller
 
     public function edit(Device $device)
     {
-        $rooms = Room::orderBy('nom')->get();
-        $categories = Category::orderBy('nom')->get();
-        $device->load('categories');
-
-        return view('devices.edit', compact('device', 'rooms', 'categories'));
+        return view('devices.edit', [
+            'device' => $device->load('categories'),
+            'rooms' => Room::orderBy('nom')->get(),
+            'categories' => Category::orderBy('nom')->get(),
+        ]);
     }
 
     public function update(DeviceRequest $request, Device $device)
@@ -69,15 +93,28 @@ class DeviceController extends Controller
 
         return redirect()
             ->route('devices.show', $device)
-            ->with('success', 'Équipement modifié avec succès.');
+            ->with('success', 'Équipement « '.$device->nom.' » modifié avec succès.');
+    }
+
+    /**
+     * Page de confirmation avant suppression.
+     */
+    public function confirmDestroy(Device $device)
+    {
+        return view('confirm-delete', [
+            'name' => $device->nom,
+            'route' => route('devices.destroy', $device),
+            'back' => route('devices.show', $device),
+        ]);
     }
 
     public function destroy(Device $device)
     {
+        $nom = $device->nom;
         $device->delete();
 
         return redirect()
             ->route('devices.index')
-            ->with('success', 'Équipement supprimé avec succès.');
+            ->with('success', 'Équipement « '.$nom.' » supprimé.');
     }
 }
